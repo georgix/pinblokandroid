@@ -39,7 +39,13 @@ fun PinScreen(navController: NavController, pinViewModel: PinViewModel) {
             onPinChanged = { pinViewModel.updatePin(it) }
         )
         Button(
-            onClick = { navController.navigate(Screen.Blok.route) },
+            onClick =
+            {
+                val block = pinState
+                // clear pin before showing the block to user
+                pinViewModel.updatePin("")
+                navController.navigate("${Screen.Blok.route}/${block}")
+            },
             enabled = pinState.length in 4..12,
             modifier = Modifier.padding(top = 80.dp)
         ) {
