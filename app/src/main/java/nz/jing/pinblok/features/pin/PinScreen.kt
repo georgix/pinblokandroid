@@ -3,28 +3,47 @@ package nz.jing.pinblok.features.pin
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import nz.jing.pinblok.Screen
+import nz.jing.pinblok.ui.components.PinInput
 
 @Composable
-fun PinScreen(navController: NavController) {
+fun PinScreen(navController: NavController, pinViewModel: PinViewModel) {
+    val pinState by pinViewModel.pinState.collectAsState()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Pin Screen")
+        Text(
+            text = "Input a 4-12 digit PIN to continue",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(16.dp)
+        )
+        PinInput(
+            pin = pinState,
+            onPinChanged = { pinViewModel.updatePin(it) }
+        )
         Button(
-            onClick = { navController.navigate(Screen.Blok.route) }
+            onClick = { navController.navigate(Screen.Blok.route) },
+            enabled = pinState.length in 4..12,
+            modifier = Modifier.padding(top = 80.dp)
         ) {
-            Text (text = "Block")
+            Text (text = "Unlock")
         }
     }
 }
@@ -32,5 +51,6 @@ fun PinScreen(navController: NavController) {
 @Preview
 @Composable
 fun PinScreenPreview() {
-    PinScreen(navController = rememberNavController())
+    val viewModel = viewModel<PinViewModel>()
+    PinScreen(navController = rememberNavController(), pinViewModel = viewModel)
 }
