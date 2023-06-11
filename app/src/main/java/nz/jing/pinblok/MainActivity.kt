@@ -11,9 +11,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dagger.hilt.android.AndroidEntryPoint
 import nz.jing.pinblok.features.pin.PinViewModel
 import nz.jing.pinblok.ui.theme.PinBlokTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val pinViewModel: PinViewModel by viewModels()
 

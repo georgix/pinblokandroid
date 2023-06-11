@@ -41,7 +41,7 @@ fun PinScreen(navController: NavController, pinViewModel: PinViewModel) {
         Button(
             onClick =
             {
-                val block = pinState
+                val block = pinViewModel.getBlock()
                 // clear pin before showing the block to user
                 pinViewModel.updatePin("")
                 navController.navigate("${Screen.Blok.route}/${block}")
